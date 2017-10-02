@@ -1,6 +1,6 @@
 {
-    "isFullscreen":false,
-    "width":2560,
-    "height":1440,
+    "isFullscreen":true,
+    "width":1920,
+    "height":1080,
     "isFrameless":true
 }

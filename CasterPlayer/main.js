@@ -75,6 +75,7 @@ function createWindow(){
   mainWindow.setResizable(true);
   mainWindow.setAlwaysOnTop(true);
   mainWindow.setFullScreen(config.isFullscreen);
+  mainWindow.webContents.openDevTools();
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
