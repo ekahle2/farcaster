@@ -1,4 +1,9 @@
+// if(__dirname.endsWith('app')){
+//   process.env.NODE_CONFIG_DIR = __dirname.substr(0, __dirname.length - 3) + 'config'
+// }
+
 const electron = require('electron')
+const config = require('config')
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -11,28 +16,28 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-function createWindow () {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+// function createWindow () {
+//   // Create the browser window.
+//   mainWindow = new BrowserWindow({width: 800, height: 600})
 
-  // and load the index.html of the app.
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
+//   // and load the index.html of the app.
+//   mainWindow.loadURL(url.format({
+//     pathname: path.join(__dirname, 'index.html'),
+//     protocol: 'file:',
+//     slashes: true
+//   }))
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+//   // Open the DevTools.
+//   // mainWindow.webContents.openDevTools()
 
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null
-  })
-}
+//   // Emitted when the window is closed.
+//   mainWindow.on('closed', function () {
+//     // Dereference the window object, usually you would store windows
+//     // in an array if your app supports multi windows, this is the time
+//     // when you should delete the corresponding element.
+//     mainWindow = null
+//   })
+// }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -56,5 +61,24 @@ app.on('activate', function () {
   }
 })
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+function createWindow(){
+
+  let _width = _height = 0;
+  if(!config.isFullscreen){
+    _width = config.width;
+    _height = config.height;
+  }
+  mainWindow = new BrowserWindow({width: config.width,height: config.height, frame: config.isFrameless});
+  mainWindow.setSize(_width,_height);
+  mainWindow.setPosition(0,0);
+  mainWindow.setMovable(false);
+  mainWindow.setResizable(true);
+  mainWindow.setAlwaysOnTop(true);
+  mainWindow.setFullScreen(config.isFullscreen);
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, 'index.html'),
+    protocol: 'file:',
+    slashes: true
+  }));
+
+}
